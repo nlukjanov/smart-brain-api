@@ -10,14 +10,11 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 
+
+console.log(process.env.POSTGRES_USER)
 const db = knex({
   client: 'pg',
-  connection: {
-    host : '127.0.0.1',
-    user : '',
-    password : '',
-    database : 'smart-brain'
-  }
+  connection: process.env.POSTGRES_URI
 });
 
 const app = express();
@@ -26,7 +23,7 @@ app.use(morgan('combined'))
 app.use(cors())
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> { res.send(database.users) })
+app.get('/', (req, res)=> { res.send("hello! it's working! again, but not db") })
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db)})
