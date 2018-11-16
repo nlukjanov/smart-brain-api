@@ -10,8 +10,6 @@ services:
     working_dir: /usr/src/smart-brain-api
     environment:
       POSTGRES_URI: postgres://nik:secret@postgres:5432/smart-brain-docker
-    links:
-      - postgres
     ports:
       - "3000:3000"
     volumes:
@@ -24,6 +22,6 @@ services:
       POSTRGES_PASSWORD: secret
       POSTGRES_DB: smart-brain-docker
       POSTGRES_HOST: postgres
-    image: postgres
+    build: ./postgres
     ports:
       - "5432:5423"
