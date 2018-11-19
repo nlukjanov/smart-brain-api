@@ -33,11 +33,19 @@ const signToken = (email) => {
   return jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: '2 days' });
 }
 
+const setToken = (token, id) => {
+  return Promise.resolve(redisClient.set(token, id))
+}
+
 const createSessions = (user) => {
   // JWT token, return user data
   const { email, id } = user;
   const token = signToken(email);
-  return { success: 'true', userId: id, token }
+  return setToken(token, id)
+    .then(() => {
+      return { success: 'true', userId: id, token }
+    })
+    .catch(console.log)
 }
 
 const signinAuthentication = (db, bcrypt) => (req, res) => {
